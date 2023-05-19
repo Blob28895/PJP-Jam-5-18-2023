@@ -5,8 +5,27 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public int speed = 5;
+    private Vector3 startingPosition;
+
+    void Start()
+    {
+        startingPosition = transform.position;
+    }
+
+    void Update()
+    {
+        if(Input.GetButtonDown("Reset Run"))
+        {
+            transform.position = startingPosition;
+        }
+    }
 
     void FixedUpdate()
+    {
+        Move();
+    }
+
+    private void Move()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
