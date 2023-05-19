@@ -66,11 +66,9 @@ public class PlayerController : MonoBehaviour
         ResetRun();
         remainingRuns--;
         
-        if(remainingRuns != 0) { return; }
-
-        for(int i = 1; i < availableRuns + 1; i++)
+        if(remainingRuns == 0) 
         {
-            StartPlayback(i);
+            StartCoroutine(StartMultiplePlaybacks(1, availableRuns + 1));
         }
     }
 
@@ -80,5 +78,14 @@ public class PlayerController : MonoBehaviour
         playerClone.GetComponent<PlayerController>().enabled = false;
 
         StartCoroutine(recorder.PlaybackRun(run, playerClone, speed));
+    }
+
+    private IEnumerator StartMultiplePlaybacks(int beginAtRun, int endAtRun)
+    {
+        for(int i = beginAtRun; i < endAtRun; i++)
+        {
+            StartPlayback(i);
+            yield return null;
+        }
     }
 }
