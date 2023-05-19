@@ -29,11 +29,8 @@ public class Recorder : MonoBehaviour
     {
         foreach(Vector3 targetPosition in positions[run])
         {
-            while(clone.transform.position != targetPosition)
-            {
-                clone.transform.position = Vector3.MoveTowards(clone.transform.position, targetPosition, speed * Time.deltaTime);
-                yield return null;
-            }
+            clone.transform.position = targetPosition;
+            yield return new WaitForFixedUpdate();
         }
     }
 
