@@ -166,7 +166,7 @@ public class EnemyInstructions: MonoBehaviour
 		for(float i = -20f; i < 30; i +=10)
 		{
 			hit = Physics2D.Raycast(transform.position, transform.position + rays[i], lightDetectionRange, includedLayers);
-			if(hit.collider != null && hit.collider.gameObject.CompareTag("Player"))
+			if(hit.collider != null && (hit.collider.gameObject.CompareTag("Player") || hit.collider.gameObject.CompareTag("Clone")))
 			{
 				transform.Rotate(0, 0, i);
 				return hit.collider.gameObject;
