@@ -139,6 +139,7 @@ public class EnemyInstructions: MonoBehaviour
 			Destroy(bubble, detectionTime);
 			finishDetectTime = Time.time + detectionTime;
 			hitPlayer.GetComponent<Collider2D>().enabled = false;
+			hitPlayer.GetComponent<PlayerController>().setCanMove(false);
 			//hitPlayer.GetComponent<PlayerController>().enabled = false;
 			if(waiting)
 			{
@@ -146,12 +147,6 @@ public class EnemyInstructions: MonoBehaviour
 			}
 		}
 
-	}
-	private IEnumerator detect()
-	{
-		detectionBubble.SetActive(true);
-		yield return new WaitForSeconds(1f);
-		detectionBubble.SetActive(false);
 	}
 	private GameObject fireRaycasts()
 	{

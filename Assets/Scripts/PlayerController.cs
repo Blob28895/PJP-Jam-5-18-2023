@@ -123,4 +123,9 @@ public class PlayerController : MonoBehaviour
             Destroy(cloneObject);
         }
     }
+
+    public void setCanMove(bool b)
+	{
+        canMove = b;
+	}
 }
