@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Recorder : MonoBehaviour
 {
-    Dictionary<int, List<Vector3>> positions = new Dictionary<int, List<Vector3>>();
+    private Dictionary<int, List<Vector3>> positions = new Dictionary<int, List<Vector3>>();
+    private Dictionary<int, Coroutine> currentPlaybacks = new Dictionary<int, Coroutine>();
 
     void Update()
     {
@@ -13,7 +14,6 @@ public class Recorder : MonoBehaviour
 
     public void RecordPosition(Vector3 currentPosition, int run)
     {
-        // add current posiution to list at key value run
         if(positions.ContainsKey(run))
         {
             positions[run].Add(currentPosition);
@@ -25,7 +25,20 @@ public class Recorder : MonoBehaviour
         }
     }
 
-    public IEnumerator PlaybackRun(int run, GameObject clone, int speed)
+    public void StartPlaybackRun(int run, GameObject clone, int speed)
+    {
+        if(currentPlaybacks.ContainsKey(run))
+        {
+            StopCoroutine(currentPlaybacks[run]);
+            currentPlaybacks.Remove(run);
+        }
+
+        
+
+        currentPlaybacks.Add(run, StartCoroutine(PlaybackRun(run, clone, speed)));
+    }
+
+    private IEnumerator PlaybackRun(int run, GameObject clone, int speed)
     {
         foreach(Vector3 targetPosition in positions[run])
         {

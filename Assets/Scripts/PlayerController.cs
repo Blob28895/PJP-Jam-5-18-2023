@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour
     public int speed = 5;
     public int availableRuns = 3;
 
+    private bool canMove = true;
     private bool runStarted = false;
+    private bool isPlaybackRunning = false;
     private int remainingRuns;
     private Vector3 startingPosition;
 
@@ -31,11 +33,17 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Move();
-        if(runStarted) 
-        {
-            // also add timer code here
+        if(canMove){
+            Move();
+        }
+
+        if(runStarted) {
             recorder.RecordPosition(transform.position, remainingRuns); 
+        }
+
+        if(runStarted && !isPlaybackRunning && remainingRuns != availableRuns) { 
+            Debug.Log("Starting multiple playbacks");
+            StartMultiplePlaybacks(remainingRuns + 1, availableRuns); 
         }
     }
 
@@ -65,27 +73,44 @@ public class PlayerController : MonoBehaviour
 
         ResetRun();
         remainingRuns--;
+
+        isPlaybackRunning = false;
         
         if(remainingRuns == 0) 
         {
-            StartCoroutine(StartMultiplePlaybacks(1, availableRuns + 1));
+            canMove = false;
+            StartMultiplePlaybacks(1, availableRuns);
+            canMove = true;
         }
     }
 
     private void StartPlayback(int run)
     {
         GameObject playerClone = Instantiate(gameObject, startingPosition, Quaternion.identity);
+        playerClone.tag = "Clone";
         playerClone.GetComponent<PlayerController>().enabled = false;
 
-        StartCoroutine(recorder.PlaybackRun(run, playerClone, speed));
+        recorder.StartPlaybackRun(run, playerClone, speed);
     }
 
-    private IEnumerator StartMultiplePlaybacks(int beginAtRun, int endAtRun)
+    private void StartMultiplePlaybacks(int beginAtRun, int endAtRun)
     {
-        for(int i = beginAtRun; i < endAtRun; i++)
+        DestroyClones();
+        isPlaybackRunning = true;
+
+        for(int i = beginAtRun; i <= endAtRun; i++)
         {
             StartPlayback(i);
-            yield return null;
+        }
+    }
+
+    private void DestroyClones()
+    {
+        GameObject[] cloneObjects = GameObject.FindGameObjectsWithTag("Clone"); // Assuming the game objects have a common tag
+
+        foreach (GameObject cloneObject in cloneObjects)
+        {
+            Destroy(cloneObject);
         }
     }
 }
