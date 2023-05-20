@@ -10,7 +10,6 @@ public class EnemyInstructions: MonoBehaviour
 	[SerializeField]
 	public Instruction[] instructions;
 	
-	
 	private Transform transform;
 	private IEnumerator wait;
 	private bool waiting = false;
@@ -25,8 +24,9 @@ public class EnemyInstructions: MonoBehaviour
 	private Vector3 initialPosition;
 	private int rotations;
 
+	private GameObject hitPlayer = null;
+	private bool playerSpotted = false;
 	private Vector3 originVector = new Vector3(-4.5f, 0, 0);
-
 	private Dictionary<float, Vector3> rays = new Dictionary<float, Vector3>()
 	{
 		{-20f, new Vector3() },
@@ -89,42 +89,56 @@ public class EnemyInstructions: MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if(instructions.Length == 0)
+		if (!playerSpotted)
 		{
-			return;
+			if (instructions.Length == 0)
+			{
+				return;
+			}
+			if (transform.position != instructionEndPosition)
+			{
+				transform.position = Vector3.MoveTowards(transform.position, instructionEndPosition, walkingSpeed * Time.deltaTime);
+			}
+			else if (currInstruction.action == Action.walk && !waiting)
+			{
+				wait = waiter(currInstruction.waitAfterCompletion);
+				StartCoroutine(wait);
+			}
+
+			if (rotations > 0)
+			{
+				rotating = true;
+				--rotations;
+				turn();
+			}
+			else if (rotating)
+			{
+				rotating = false;
+				wait = waiter(currInstruction.waitAfterCompletion);
+				StartCoroutine(wait);
+			}
+			updateRays();
+			//drawFunc();
+			hitPlayer = fireRaycasts();
 		}
-		if(transform.position != instructionEndPosition)
-		{
-			transform.position = Vector3.MoveTowards(transform.position, instructionEndPosition, walkingSpeed * Time.deltaTime);
-		}
-		else if (currInstruction.action == Action.walk && !waiting)
-		{
-			wait = waiter(currInstruction.waitAfterCompletion);
-			StartCoroutine(wait);
+		else
+		{ // if the player is already spotted
+			walk(hitPlayer.transform.position);
 		}
 
-		if(rotations > 0)
-		{
-			rotating = true;
-			--rotations;
-			turn();
-		}
-		else if(rotating)
-		{
-			rotating = false;
-			wait = waiter(currInstruction.waitAfterCompletion);
-			StartCoroutine(wait);
+		
+		if(hitPlayer != null && !playerSpotted)
+		{ // will only be entered when first seeing a player
+			//Debug.Log("Found him!");
+			playerSpotted = true;
+			hitPlayer.GetComponent<Collider2D>().enabled = false;
+			//hitPlayer.GetComponent<PlayerController>().enabled = false;
+			if(waiting)
+			{
+				StopCoroutine(wait);
+			}
 		}
 
-
-		updateRays();
-		fireRaycasts();
-
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.position + rays[0], lightDetectionRange, includedLayers);
-		if(Physics2D.Raycast(transform.position, transform.position + rays[0], lightDetectionRange, includedLayers))
-		{
-			Debug.Log("Hit!");
-		}
 	}
 	private GameObject fireRaycasts()
 	{
@@ -134,6 +148,7 @@ public class EnemyInstructions: MonoBehaviour
 			hit = Physics2D.Raycast(transform.position, transform.position + rays[i], lightDetectionRange, includedLayers);
 			if(hit.collider != null)
 			{
+				transform.Rotate(0, 0, i);
 				return hit.collider.gameObject;
 			}
 		}
@@ -165,7 +180,7 @@ public class EnemyInstructions: MonoBehaviour
 		}
 		instructionEndOrientation = transform.rotation.z + degrees;
 		rotations = (int)(Mathf.Abs(instructionEndOrientation - transform.rotation.z) / degreesPerTick);
-		Debug.Log(instructionEndOrientation);
+		//Debug.Log(instructionEndOrientation);
 	}
 
 	private IEnumerator waiter(float seconds)
@@ -184,20 +199,19 @@ public class EnemyInstructions: MonoBehaviour
 		{
 			instructionIndex = 0;
 		}
-		Debug.Log(instructionIndex);
+		//Debug.Log(instructionIndex);
 		currInstruction = instructions[instructionIndex];
 		setEndState();
 	}
-	private void walk()
+	private void walk(Vector3 pos)
 	{
-		transform.Translate(Vector3.left * walkingSpeed * Time.deltaTime);
+		transform.position = Vector3.MoveTowards(transform.position, pos, walkingSpeed * Time.deltaTime);
 		
 	}
 
 	private void turn()
 	{
 		transform.Rotate(0, 0, degreesPerTick);
-		
 	}
 
 	private void updateRays()
