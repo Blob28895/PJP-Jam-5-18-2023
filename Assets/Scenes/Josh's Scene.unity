@@ -198,18 +198,6 @@ MonoBehaviour:
   m_ShapePathHash: -2136804458
   m_Mesh: {fileID: 471533611}
   m_InstanceId: -55022
---- !u!114 &105936332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105936324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafe20e265ff9a2479dc6f215695cc8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &105936333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +213,8 @@ MonoBehaviour:
   includedLayers:
     serializedVersion: 2
     m_Bits: 64
+  detectionBubble: {fileID: 959019579464688947, guid: 68b20502edc2d3e46b1f65469d60f785, type: 3}
+  detectionTime: 0.5
   walkingSpeed: 2
   lightDetectionRange: 4.5
   instructions:

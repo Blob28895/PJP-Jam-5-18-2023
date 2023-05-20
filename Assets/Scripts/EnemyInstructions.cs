@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyInstructions: MonoBehaviour
 {
 	public LayerMask includedLayers;
+	public GameObject detectionBubble;
+	public float detectionTime = 0.5f;
 	public float walkingSpeed = 1f;
 	public float lightDetectionRange = 4.5f;
 	[SerializeField]
@@ -23,6 +25,7 @@ public class EnemyInstructions: MonoBehaviour
 	private float initialOrientation;
 	private Vector3 initialPosition;
 	private int rotations;
+	private float finishDetectTime = 0f;
 
 	private GameObject hitPlayer = null;
 	private bool playerSpotted = false;
@@ -86,7 +89,7 @@ public class EnemyInstructions: MonoBehaviour
 			Debug.DrawLine(transform.position, transform.position + rays[i], Color.red, 2.5f);
 		}
 	}
-
+	
 	private void FixedUpdate()
 	{
 		if (!playerSpotted)
@@ -121,7 +124,7 @@ public class EnemyInstructions: MonoBehaviour
 			//drawFunc();
 			hitPlayer = fireRaycasts();
 		}
-		else
+		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
 			walk(hitPlayer.transform.position);
 		}
@@ -131,6 +134,10 @@ public class EnemyInstructions: MonoBehaviour
 		{ // will only be entered when first seeing a player
 			//Debug.Log("Found him!");
 			playerSpotted = true;
+			GameObject bubble = Instantiate(detectionBubble);
+			bubble.transform.position = transform.position + new Vector3(0, GetComponent<SpriteRenderer>().bounds.size.x / 2, 0);
+			Destroy(bubble, detectionTime);
+			finishDetectTime = Time.time + detectionTime;
 			hitPlayer.GetComponent<Collider2D>().enabled = false;
 			//hitPlayer.GetComponent<PlayerController>().enabled = false;
 			if(waiting)
@@ -139,6 +146,12 @@ public class EnemyInstructions: MonoBehaviour
 			}
 		}
 
+	}
+	private IEnumerator detect()
+	{
+		detectionBubble.SetActive(true);
+		yield return new WaitForSeconds(1f);
+		detectionBubble.SetActive(false);
 	}
 	private GameObject fireRaycasts()
 	{
