@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public int speed = 5;
     public int availableRuns = 3;
+    public CountdownTimer countdownTimer;
 
     private bool canMove = true;
     private bool runStarted = false;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if(runStarted) {
+            if(countdownTimer.timerEnded) { ResetRun(); }
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 
@@ -53,9 +55,15 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0);
-        if(movement != Vector3.zero) { runStarted = true; }
+        if(movement != Vector3.zero) { StartRun(); }
 
         transform.Translate(movement * speed * Time.deltaTime);
+    }
+
+    private void StartRun()
+    {
+        runStarted = true;
+        countdownTimer.StartTimer();
     }
 
     private void ResetRun(bool allRuns = false)
@@ -63,6 +71,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Remaining runs: " + remainingRuns);
         transform.position = startingPosition;
 
+        countdownTimer.ResetTimer();
         if(allRuns) { remainingRuns = availableRuns; }
     }
 
@@ -84,15 +93,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StartPlayback(int run)
-    {
-        GameObject playerClone = Instantiate(gameObject, startingPosition, Quaternion.identity);
-        playerClone.tag = "Clone";
-        playerClone.GetComponent<PlayerController>().enabled = false;
-
-        recorder.StartPlaybackRun(run, playerClone, speed);
-    }
-
     private void StartMultiplePlaybacks(int beginAtRun, int endAtRun)
     {
         DestroyClones();
@@ -100,8 +100,17 @@ public class PlayerController : MonoBehaviour
 
         for(int i = beginAtRun; i <= endAtRun; i++)
         {
-            StartPlayback(i);
+            recorder.StartPlaybackRun(i, CreateClone(), speed);
         }
+    }
+
+    private GameObject CreateClone()
+    {
+        GameObject playerClone = Instantiate(gameObject, startingPosition, Quaternion.identity);
+        playerClone.tag = "Clone";
+        playerClone.GetComponent<PlayerController>().enabled = false;
+
+        return playerClone;
     }
 
     private void DestroyClones()
