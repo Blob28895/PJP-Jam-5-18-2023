@@ -7,6 +7,7 @@ public class EnemyInstructions: MonoBehaviour
 	public LayerMask includedLayers;
 	public GameObject detectionBubble;
 	public float detectionTime = 0.5f;
+	public GameObject light;
 	public float walkingSpeed = 1f;
 	public float lightDetectionRange = 4.5f;
 	[SerializeField]
@@ -130,7 +131,14 @@ public class EnemyInstructions: MonoBehaviour
 		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
 			//Debug.Log("Moving Towards Player");
-			walk(hitPlayer.transform.position);
+			if(transform.position != hitPlayer.transform.position)
+			{
+				walk(hitPlayer.transform.position);
+			}
+			else
+			{
+				light.SetActive(false);
+			}
 		}
 
 		
@@ -255,6 +263,7 @@ public class EnemyInstructions: MonoBehaviour
 		}
 		
 		rotating = false;
+		light.SetActive(true);
 		
 	}
 
