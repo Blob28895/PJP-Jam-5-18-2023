@@ -43,22 +43,45 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector2 movement = new Vector2(horizontalInput, verticalInput);
+        Vector2 movement = new Vector2(horizontalInput, verticalInput).normalized;
         if(movement != Vector2.zero) { runManager.StartRun(); }
 
         // Check for potential collisions
-		int count = rb.Cast(
-			movement, // X and Y values between -1 and 1 that represent the direction from the body to look for collisions
-			movementFilter, // The settings that determine where a collision can occur on such as layers to collide with
-			castCollisions, // List of collisions to store the found collisions into after the Cast is finished
-			speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
 
-        if(count == 0){
-            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-            transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
-        }
+        bool success = movePlayer(movement);
+        if(!success)
+		{
+            success = movePlayer(new Vector2(movement.x, 0));
+            if(!success)
+			{
+                movePlayer(new Vector2(0, movement.y));
+			}
+		}
+
     }
+
+    private bool movePlayer(Vector2 vec)
+	{
+        int count = rb.Cast(
+        vec, // X and Y values between -1 and 1 that represent the direction from the body to look for collisions
+        movementFilter, // The settings that determine where a collision can occur on such as layers to collide with
+        castCollisions, // List of collisions to store the found collisions into after the Cast is finished
+        speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
+
+        if (count == 0)
+        {
+            rb.MovePosition(rb.position + vec * speed * Time.fixedDeltaTime);
+            float angle = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+            transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
+            return true;
+        }
+        else
+		{
+            return false;
+        }
+
+        
+	}
 
 
     public void setCanMove(bool b)
