@@ -260,37 +260,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2135260698 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1102552785389593251, guid: 553711346ac1d464bbae3cd9fa89a1ab, type: 3}
-  m_PrefabInstance: {fileID: 1102552784798428479}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &2135260702
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135260698}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1001 &1102552784798428479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -359,6 +328,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 182132658, guid: 007ed32a57a003340ba17f171306ec5c, type: 3}
+      propertyPath: levelToLoad
+      value: Josh's Scene
+      objectReference: {fileID: 0}
     - target: {fileID: 2754403932066653093, guid: 007ed32a57a003340ba17f171306ec5c, type: 3}
       propertyPath: m_RootOrder
       value: 2
