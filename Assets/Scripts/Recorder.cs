@@ -25,16 +25,21 @@ public class Recorder : MonoBehaviour
         }
     }
 
+    public void ClearAllRecordings()
+    {
+        positions.Clear();
+    }
+
+    public void StopAllPlaybacks()
+    {
+        foreach(KeyValuePair<int, Coroutine> entry in currentPlaybacks)
+        {
+            StopCoroutine(entry.Value);
+        }
+    }
+
     public void StartPlaybackRun(int run, GameObject clone, int speed)
     {
-        if(currentPlaybacks.ContainsKey(run))
-        {
-            StopCoroutine(currentPlaybacks[run]);
-            currentPlaybacks.Remove(run);
-        }
-
-        
-
         currentPlaybacks.Add(run, StartCoroutine(PlaybackRun(run, clone, speed)));
     }
 

@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 
+        Debug.Log(runStarted + " " + isPlaybackRunning + " " + remainingRuns + " " + availableRuns);
         if(runStarted && !isPlaybackRunning && remainingRuns != availableRuns) { 
             Debug.Log("Starting multiple playbacks");
             StartMultiplePlaybacks(remainingRuns + 1, availableRuns); 
@@ -72,9 +73,18 @@ public class PlayerController : MonoBehaviour
         transform.position = startingPosition;
 
         countdownTimer.ResetTimer();
+        recorder.StopAllPlaybacks();
+        isPlaybackRunning = false;
+        DestroyClones();
+        
         resetEnemies();
+
+
         canMove = true;
-        if(allRuns) { remainingRuns = availableRuns; }
+        if(allRuns) { 
+            remainingRuns = availableRuns;
+            recorder.ClearAllRecordings();
+        }
         runStarted = false;
     }
 
@@ -101,6 +111,7 @@ public class PlayerController : MonoBehaviour
         DestroyClones();
         isPlaybackRunning = true;
 
+        recorder.StopAllPlaybacks();
         for(int i = beginAtRun; i <= endAtRun; i++)
         {
             recorder.StartPlaybackRun(i, CreateClone(), speed);
