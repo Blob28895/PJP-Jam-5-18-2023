@@ -53,8 +53,11 @@ public class PlayerController : MonoBehaviour
 			castCollisions, // List of collisions to store the found collisions into after the Cast is finished
 			speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
 
-        if(count == 0)
+        if(count == 0){
             rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+            transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
+        }
     }
 
 
