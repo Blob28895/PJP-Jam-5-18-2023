@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7752085412581091802}
   - component: {fileID: 1418227344523972094}
   - component: {fileID: 3114049220760468927}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BlueContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

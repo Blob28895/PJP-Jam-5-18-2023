@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5004510536585013346}
   - component: {fileID: 7134800180395272655}
   - component: {fileID: 1030957054740156969}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LongBlueCrate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

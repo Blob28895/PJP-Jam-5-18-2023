@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2135689463377763816}
   - component: {fileID: 7320883345109809612}
   - component: {fileID: 6701599891821250957}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RedContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
