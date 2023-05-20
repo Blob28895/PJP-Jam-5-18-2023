@@ -8,21 +8,24 @@ public class DoorSwitchController : MonoBehaviour
     public Sprite pressed;
     public Sprite unpressed;
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.tag == "Player")
-        {
+    private GameObject overlap;
+
+	private void Update()
+	{
+        overlap = Physics2D.OverlapCircle(transform.position, GetComponent<CircleCollider2D>().radius).gameObject;
+        /*if(overlap != null)
+		{
+            Debug.Log(overlap.name);
+		}*/
+        if (overlap.CompareTag("Player") || overlap.CompareTag("Clone"))
+		{
             door.OpenDoor();
             GetComponent<SpriteRenderer>().sprite = pressed;
         }
-    }
-
-	private void OnTriggerExit2D(Collider2D collision)
-	{
-		if(collision.CompareTag("Player"))
+        else
 		{
             door.CloseDoor();
             GetComponent<SpriteRenderer>().sprite = unpressed;
-		}
+        }
 	}
 }

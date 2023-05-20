@@ -5,33 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class DoorController : MonoBehaviour
 {
-    public string levelToLoad;
 
-    private bool isOpen = false;
     SpriteRenderer spriteRenderer;
+    Collider2D boxCollider;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     public void OpenDoor()
     {
-        isOpen = true;
         spriteRenderer.enabled = false;
+        boxCollider.enabled = false;
     }
 
     public void CloseDoor()
-	{
-        isOpen = false;
-        spriteRenderer.enabled = true;
-	}
-
-    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player" && isOpen)
-        {
-            SceneManager.LoadScene(levelToLoad);
-        }
+        spriteRenderer.enabled = true;
+        boxCollider.enabled = true;
+
     }
+
+
 }

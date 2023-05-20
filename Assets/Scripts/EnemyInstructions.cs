@@ -205,12 +205,12 @@ public class EnemyInstructions: MonoBehaviour
 
 	private IEnumerator waiter(float seconds)
 	{
-		Debug.Log("Starting Waiting");
+		//Debug.Log("Starting Waiting");
 		waiting = true;
 		yield return new WaitForSeconds(seconds);
 		nextInstruction();
 		waiting = false;
-		Debug.Log("Done Waiting");
+		//Debug.Log("Done Waiting");
 	}
 
 	private void nextInstruction()
@@ -261,7 +261,7 @@ public class EnemyInstructions: MonoBehaviour
 		nextInstruction();
 		if(waiting)
 		{
-			Debug.Log("Stop Wait Early");
+			//Debug.Log("Stop Wait Early");
 			waiting = false;
 			StopCoroutine(wait);
 		}
