@@ -15,9 +15,4 @@ public class DoorController : MonoBehaviour
     {
         spriteRenderer.enabled = false;
     }
-
-    public void CloseDoor()
-    {
-        spriteRenderer.enabled = true;
-    }
 }
