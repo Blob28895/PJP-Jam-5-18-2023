@@ -21,6 +21,12 @@ public class DoorController : MonoBehaviour
         spriteRenderer.enabled = false;
     }
 
+    public void CloseDoor()
+	{
+        isOpen = false;
+        spriteRenderer.enabled = true;
+	}
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Player" && isOpen)
