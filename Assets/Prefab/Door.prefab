@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037f362fc4ead164396516fce7905a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelToLoad: 
+  levelToLoad: Josh's Scene
 --- !u!61 &1722475972
 BoxCollider2D:
   m_ObjectHideFlags: 0
