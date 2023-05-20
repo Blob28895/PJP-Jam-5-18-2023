@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class EnemyInstructions: MonoBehaviour
 {
+	public LayerMask includedLayers;
 	public float walkingSpeed = 1f;
+	public float lightDetectionRange = 4.5f;
 	[SerializeField]
 	public Instruction[] instructions;
 	
@@ -23,7 +25,17 @@ public class EnemyInstructions: MonoBehaviour
 	private Vector3 initialPosition;
 	private int rotations;
 
-	private Vector3 rayDirection = new Vector2(-1, 0);
+	private Vector3 originVector = new Vector3(-4.5f, 0, 0);
+
+	private Dictionary<float, Vector3> rays = new Dictionary<float, Vector3>()
+	{
+		{-20f, new Vector3() },
+		{-10f, new Vector3() },
+		{0f, new Vector3() },
+		{10f, new Vector3() },
+		{20f, new Vector3() }
+	};
+
 	public enum Action { 
 		walk,
 		leftTurn,
@@ -45,16 +57,34 @@ public class EnemyInstructions: MonoBehaviour
 	private void Awake()
 	{
 		transform = GetComponent<Transform>();
+		rays[0f] = originVector;
+		initializeRays();
+		//drawFunc();
 		if (instructions.Length > 0)
 		{
 			currInstruction = instructions[0];
 			setEndState();
 		}
 		
-		Debug.DrawLine(transform.position, rayDirection, Color.red, 5f);
+		
 		initialOrientation = transform.rotation.z;
 		initialPosition = transform.position;
 		
+	}
+
+	public void initializeRays()
+	{
+		rays[-20f] = Quaternion.AngleAxis(-20f, Vector3.forward) * originVector;
+		rays[-10f] = Quaternion.AngleAxis(-10f, Vector3.forward) * originVector;
+		rays[10f] = Quaternion.AngleAxis(10f, Vector3.forward) * originVector;
+		rays[20f] = Quaternion.AngleAxis(20f, Vector3.forward) * originVector;
+	}
+	private void drawFunc()
+	{
+		for(float i = -20f; i < 30f; i += 10f)
+		{
+			Debug.DrawLine(transform.position, transform.position + rays[i], Color.red, 2.5f);
+		}
 	}
 
 	private void FixedUpdate()
@@ -75,12 +105,41 @@ public class EnemyInstructions: MonoBehaviour
 
 		if(rotations > 0)
 		{
+			rotating = true;
 			--rotations;
-			transform.Rotate(0, 0, degreesPerTick);
+			turn();
+		}
+		else if(rotating)
+		{
+			rotating = false;
+			wait = waiter(currInstruction.waitAfterCompletion);
+			StartCoroutine(wait);
 		}
 
-	}
 
+		updateRays();
+		fireRaycasts();
+
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.position + rays[0], lightDetectionRange, includedLayers);
+		if(Physics2D.Raycast(transform.position, transform.position + rays[0], lightDetectionRange, includedLayers))
+		{
+			Debug.Log("Hit!");
+		}
+	}
+	private GameObject fireRaycasts()
+	{
+		RaycastHit2D hit;
+		for(float i = -20f; i < 30; i +=10)
+		{
+			hit = Physics2D.Raycast(transform.position, transform.position + rays[i], lightDetectionRange, includedLayers);
+			if(hit.collider != null)
+			{
+				return hit.collider.gameObject;
+			}
+		}
+
+		return null;
+	}
 	private void setEndState()
 	{
 		if(currInstruction.action == Action.walk)
@@ -96,7 +155,7 @@ public class EnemyInstructions: MonoBehaviour
 	}
 	private void setEndPosition(float distance)
 	{
-		instructionEndPosition = transform.position + Vector3.left * distance;
+		instructionEndPosition = transform.position + (rays[0] / lightDetectionRange) * distance;
 	}
 	private void setEndOrientation(Action action, float degrees)
 	{
@@ -137,11 +196,23 @@ public class EnemyInstructions: MonoBehaviour
 
 	private void turn()
 	{
+		transform.Rotate(0, 0, degreesPerTick);
+		
+	}
 
+	private void updateRays()
+	{
+		//Debug.Log(transform.rotation.z);
+		rays[0] = Quaternion.AngleAxis(transform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[-20f] = Quaternion.AngleAxis(-20f + transform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[-10f] = Quaternion.AngleAxis(-10f + transform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[10f] = Quaternion.AngleAxis(10f + transform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[20f] = Quaternion.AngleAxis(20f + transform.eulerAngles.z, Vector3.forward) * originVector;
+		
 	}
 
 
 
 
-	
+
 }
