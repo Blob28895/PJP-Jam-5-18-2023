@@ -142,7 +142,7 @@ public class EnemyInstructions: MonoBehaviour
 			bubble.transform.position = transform.position + new Vector3(0, GetComponent<SpriteRenderer>().bounds.size.x / 2, 0);
 			Destroy(bubble, detectionTime);
 			finishDetectTime = Time.time + detectionTime;
-			hitPlayer.GetComponent<Collider2D>().enabled = false;
+			hitPlayer.GetComponent<Collider2D>().isTrigger = true;
 			hitPlayer.GetComponent<PlayerController>().setCanMove(false);
 			//hitPlayer.GetComponent<PlayerController>().enabled = false;
 			if(waiting)
