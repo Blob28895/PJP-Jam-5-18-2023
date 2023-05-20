@@ -72,6 +72,8 @@ public class PlayerController : MonoBehaviour
         transform.position = startingPosition;
 
         countdownTimer.ResetTimer();
+        resetEnemies();
+        canMove = true;
         if(allRuns) { remainingRuns = availableRuns; }
         runStarted = false;
     }
@@ -127,5 +129,13 @@ public class PlayerController : MonoBehaviour
     public void setCanMove(bool b)
 	{
         canMove = b;
+	}
+
+    public void resetEnemies()
+	{
+        foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("enemy"))
+		{
+            enemy.GetComponent<EnemyInstructions>().resetEnemy();
+		}
 	}
 }

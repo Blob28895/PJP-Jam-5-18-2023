@@ -22,7 +22,7 @@ public class EnemyInstructions: MonoBehaviour
 
 	private bool rotating = false;
 	private float degreesPerTick = 3f;
-	private float initialOrientation;
+	private Quaternion initialOrientation;
 	private Vector3 initialPosition;
 	private int rotations;
 	private float finishDetectTime = 0f;
@@ -60,7 +60,7 @@ public class EnemyInstructions: MonoBehaviour
 	private void Awake()
 	{
 		transform = GetComponent<Transform>();
-		rays[0f] = originVector;
+		
 		initializeRays();
 		//drawFunc();
 		if (instructions.Length > 0)
@@ -70,13 +70,14 @@ public class EnemyInstructions: MonoBehaviour
 		}
 		
 		
-		initialOrientation = transform.rotation.z;
+		initialOrientation = transform.rotation;
 		initialPosition = transform.position;
 		
 	}
 
 	public void initializeRays()
 	{
+		rays[0f] = originVector;
 		rays[-20f] = Quaternion.AngleAxis(-20f, Vector3.forward) * originVector;
 		rays[-10f] = Quaternion.AngleAxis(-10f, Vector3.forward) * originVector;
 		rays[10f] = Quaternion.AngleAxis(10f, Vector3.forward) * originVector;
@@ -100,6 +101,7 @@ public class EnemyInstructions: MonoBehaviour
 			}
 			if (transform.position != instructionEndPosition)
 			{
+				//Debug.Log("Moving towards instruction");
 				transform.position = Vector3.MoveTowards(transform.position, instructionEndPosition, walkingSpeed * Time.deltaTime);
 			}
 			else if (currInstruction.action == Action.walk && !waiting)
@@ -110,6 +112,7 @@ public class EnemyInstructions: MonoBehaviour
 
 			if (rotations > 0)
 			{
+				//Debug.Log("Rotating");
 				rotating = true;
 				--rotations;
 				turn();
@@ -121,11 +124,12 @@ public class EnemyInstructions: MonoBehaviour
 				StartCoroutine(wait);
 			}
 			updateRays();
-			//drawFunc();
+			drawFunc();
 			hitPlayer = fireRaycasts();
 		}
 		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
+			//Debug.Log("Moving Towards Player");
 			walk(hitPlayer.transform.position);
 		}
 
@@ -203,7 +207,7 @@ public class EnemyInstructions: MonoBehaviour
 	{
 
 		instructionIndex++;
-		if(instructionIndex >= instructions.Length)
+		if(instructionIndex >= instructions.Length || instructionIndex < 0)
 		{
 			instructionIndex = 0;
 		}
@@ -233,7 +237,26 @@ public class EnemyInstructions: MonoBehaviour
 		
 	}
 
-
+	public void resetEnemy()
+	{
+		transform.position = initialPosition;
+		transform.rotation = initialOrientation;
+		rotations = 0;
+		instructionEndOrientation = transform.rotation.z;
+		instructionEndPosition = transform.position;
+		hitPlayer = null;
+		playerSpotted = false;
+		instructionIndex = -1;
+		initializeRays();
+		nextInstruction();
+		if(waiting)
+		{
+			StopCoroutine(wait);
+		}
+		
+		rotating = false;
+		
+	}
 
 
 
