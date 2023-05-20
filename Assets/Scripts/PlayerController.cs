@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
 
         countdownTimer.ResetTimer();
         if(allRuns) { remainingRuns = availableRuns; }
+        runStarted = false;
     }
 
     private void LockInRun()
