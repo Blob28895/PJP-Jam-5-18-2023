@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class RunManager : MonoBehaviour
 {
     public int availableRuns = 3;
     public CountdownTimer countdownTimer;
+    public TMP_Text remainingRunsText;
 
     private bool runStarted = false;
     private bool isPlaybackRunning = false;
@@ -14,7 +16,7 @@ public class RunManager : MonoBehaviour
 
     private Recorder recorder;
     private PlayerController player;
-
+    
     void Start()
     {
         recorder = GetComponent<Recorder>();
@@ -35,6 +37,7 @@ public class RunManager : MonoBehaviour
             Debug.Log("Starting multiple playbacks");
             StartMultiplePlaybacks(remainingRuns + 1, availableRuns, player.speed); 
         }
+        remainingRunsText.text = "Remaining Echoes: " + remainingRuns;
     }
 
     public void StartRun()
@@ -46,7 +49,6 @@ public class RunManager : MonoBehaviour
     public void ResetRun(bool allRuns = false)
     {
         player.setCanMove(true);
-        Debug.Log("Remaining runs: " + remainingRuns);
         transform.position = startingPosition;
 
         countdownTimer.ResetTimer();
@@ -95,6 +97,7 @@ public class RunManager : MonoBehaviour
     {
         GameObject playerClone = Instantiate(gameObject, startingPosition, Quaternion.identity);
         playerClone.tag = "Clone";
+        playerClone.GetComponent<RunManager>().enabled = false;
         playerClone.GetComponent<PlayerController>().enabled = false;
 
         return playerClone;
