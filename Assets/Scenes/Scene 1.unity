@@ -468,6 +468,10 @@ PrefabInstance:
       propertyPath: countdownTimer
       value: 
       objectReference: {fileID: 391539498}
+    - target: {fileID: 292057427758699976, guid: cb2c44b5ec4bd7b478930fb065089546, type: 3}
+      propertyPath: countdownTimer
+      value: 
+      objectReference: {fileID: 391539498}
     - target: {fileID: 3754698302233554913, guid: cb2c44b5ec4bd7b478930fb065089546, type: 3}
       propertyPath: m_RootOrder
       value: 1
