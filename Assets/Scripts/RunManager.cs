@@ -45,6 +45,7 @@ public class RunManager : MonoBehaviour
 
     public void ResetRun(bool allRuns = false)
     {
+        player.setCanMove(true);
         Debug.Log("Remaining runs: " + remainingRuns);
         transform.position = startingPosition;
 

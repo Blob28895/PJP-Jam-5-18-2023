@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(canMove){
+        if(canMove) {
             Move();
         }
     }
