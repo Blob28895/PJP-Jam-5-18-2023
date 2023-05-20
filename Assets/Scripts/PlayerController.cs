@@ -8,10 +8,14 @@ public class PlayerController : MonoBehaviour
     private bool canMove = true;
     
     private RunManager runManager;
+    private Rigidbody2D rb;
+    private ContactFilter2D movementFilter;
+    private List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
     void Start()
     {  
-        runManager = GetComponent<RunManager>();    
+        runManager = GetComponent<RunManager>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -39,10 +43,18 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0);
-        if(movement != Vector3.zero) { runManager.StartRun(); }
+        Vector2 movement = new Vector2(horizontalInput, verticalInput);
+        if(movement != Vector2.zero) { runManager.StartRun(); }
 
-        transform.Translate(movement * speed * Time.deltaTime);
+        // Check for potential collisions
+		int count = rb.Cast(
+			movement, // X and Y values between -1 and 1 that represent the direction from the body to look for collisions
+			movementFilter, // The settings that determine where a collision can occur on such as layers to collide with
+			castCollisions, // List of collisions to store the found collisions into after the Cast is finished
+			speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
+
+        if(count == 0)
+            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
     }
 
 
