@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private ContactFilter2D movementFilter;
     private List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
+    private Vector2 lastDirectionFacing = Vector2.zero;
+
     private AudioManager audioManager;
 
     // variables for victory display
@@ -77,8 +79,7 @@ public class PlayerController : MonoBehaviour
 			castCollisions, // List of collisions to store the found collisions into after the Cast is finished
 			speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
 
-        float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-        transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
+        
 
         bool success = movePlayer(movement);
         if(!success)
@@ -89,6 +90,14 @@ public class PlayerController : MonoBehaviour
                 movePlayer(new Vector2(0, movement.y));
 			}
 		}
+
+        // make player face the last direction they were facing
+        if (movement == Vector2.zero) { movement = lastDirectionFacing; }
+        else { lastDirectionFacing = movement; }
+        
+        // rotate player to direction facing
+        float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+        transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
     }
 
     private bool movePlayer(Vector2 vec)
