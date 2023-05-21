@@ -7,7 +7,7 @@ public class CountdownTimer : MonoBehaviour
     public float totalTime = 60f; // total time in seconds
 
     private float currentTime;
-    private bool timerStarted = false;
+    private bool timerStarted = false; 
     public bool timerEnded {get; private set;} = false;
 
     public TMP_Text timerText;
@@ -53,4 +53,9 @@ public class CountdownTimer : MonoBehaviour
         timerEnded = false;
         UpdateTimerText();
     }
+
+    public bool getTimerStarted()
+	{
+        return timerStarted;
+	}
 }

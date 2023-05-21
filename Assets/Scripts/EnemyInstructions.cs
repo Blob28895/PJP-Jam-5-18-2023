@@ -20,6 +20,7 @@ public class EnemyInstructions: MonoBehaviour
 	private Instruction currInstruction;
 	private Vector3 instructionEndPosition;
 	private float instructionEndOrientation;
+	private CountdownTimer timer;
 
 	private bool rotating = false;
 	private float degreesPerTick = 3f;
@@ -60,6 +61,7 @@ public class EnemyInstructions: MonoBehaviour
 	};
 	private void Awake()
 	{
+		timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<CountdownTimer>();
 		enemyTransform = GetComponent<Transform>();
 		
 		updateRays();
@@ -86,6 +88,10 @@ public class EnemyInstructions: MonoBehaviour
 	
 	private void FixedUpdate()
 	{
+		if(!timer.getTimerStarted())
+		{
+			return;
+		}
 		if (!playerSpotted)
 		{
 

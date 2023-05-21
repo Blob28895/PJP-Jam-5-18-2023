@@ -9,6 +9,7 @@ TagManager:
   - Level Complete
   - AudioManager
   - Level Failed
+  - Timer
   layers:
   - Default
   - TransparentFX
