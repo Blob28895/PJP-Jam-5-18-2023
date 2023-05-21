@@ -112,6 +112,7 @@ public class RunManager : MonoBehaviour
     {
         GameObject playerClone = Instantiate(gameObject, startingPosition, Quaternion.identity);
         playerClone.tag = "Clone";
+        playerClone.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
         playerClone.GetComponent<RunManager>().enabled = false;
         playerClone.GetComponent<PlayerController>().enabled = false;
 
