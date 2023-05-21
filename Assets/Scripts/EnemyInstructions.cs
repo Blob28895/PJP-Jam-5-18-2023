@@ -88,9 +88,7 @@ public class EnemyInstructions: MonoBehaviour
 	{
 		if (!playerSpotted)
 		{
-			updateRays();
-			drawFunc();
-			hitPlayer = fireRaycasts();
+
 			if (instructions.Length == 0)
 			{
 				return;
@@ -119,7 +117,9 @@ public class EnemyInstructions: MonoBehaviour
 				wait = waiter(currInstruction.waitAfterCompletion);
 				StartCoroutine(wait);
 			}
-			
+			updateRays();
+			//drawFunc();
+			hitPlayer = fireRaycasts();	
 		}
 		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
@@ -159,10 +159,17 @@ public class EnemyInstructions: MonoBehaviour
 		RaycastHit2D hit;
 		for(float i = -20f; i < 30; i +=10)
 		{
-			hit = Physics2D.Raycast(enemyTransform.position, enemyTransform.position + rays[i], lightDetectionRange, includedLayers);
+			if(i == 0)
+			{
+				Debug.DrawRay(enemyTransform.position, /*enemyTransform.position +*/ rays[i], Color.green, 2f);
+
+			}
+			//Debug.Log(rays[0]);
+			hit = Physics2D.Raycast(enemyTransform.position, /*enemyTransform.position +*/ rays[i], lightDetectionRange, includedLayers);
 			if(hit.collider != null && (hit.collider.gameObject.CompareTag("Player") || hit.collider.gameObject.CompareTag("Clone")))
 			{
 				enemyTransform.Rotate(0, 0, i);
+				Debug.Log(i);
 				return hit.collider.gameObject;
 			}
 		}
@@ -232,12 +239,13 @@ public class EnemyInstructions: MonoBehaviour
 
 	private void updateRays()
 	{
-		//Debug.Log(transform.rotation.z);
+		//Debug.Log(enemyTransform.rotation.z);
 		rays[0] = Quaternion.AngleAxis(enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
 		rays[-20f] = Quaternion.AngleAxis(-20f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
 		rays[-10f] = Quaternion.AngleAxis(-10f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
 		rays[10f] = Quaternion.AngleAxis(10f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
 		rays[20f] = Quaternion.AngleAxis(20f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
+		//drawFunc();
 		
 	}
 
