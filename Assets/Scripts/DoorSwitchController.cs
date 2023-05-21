@@ -10,13 +10,27 @@ public class DoorSwitchController : MonoBehaviour
 
     private GameObject overlap;
 
-	private void Update()
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if(collision.CompareTag("Player") || collision.CompareTag("Clone"))
+		{
+            door.OpenDoor();
+            GetComponent<SpriteRenderer>().sprite = pressed;
+        }
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+        if (collision.CompareTag("Player") || collision.CompareTag("Clone"))
+        {
+            door.CloseDoor();
+            GetComponent<SpriteRenderer>().sprite = unpressed;
+        }
+    }
+	/*private void Update()
 	{
         overlap = Physics2D.OverlapCircle(transform.position, GetComponent<CircleCollider2D>().radius).gameObject;
-        /*if(overlap != null)
-		{
-            Debug.Log(overlap.name);
-		}*/
+
         if (overlap.CompareTag("Player") || overlap.CompareTag("Clone"))
 		{
             door.OpenDoor();
@@ -27,5 +41,5 @@ public class DoorSwitchController : MonoBehaviour
             door.CloseDoor();
             GetComponent<SpriteRenderer>().sprite = unpressed;
         }
-	}
+	}*/
 }
