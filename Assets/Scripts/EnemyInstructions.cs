@@ -76,14 +76,6 @@ public class EnemyInstructions: MonoBehaviour
 		
 	}
 
-	public void initializeRays()
-	{
-		rays[0f] = originVector;
-		rays[-20f] = Quaternion.AngleAxis(-20f, Vector3.forward) * originVector;
-		rays[-10f] = Quaternion.AngleAxis(-10f, Vector3.forward) * originVector;
-		rays[10f] = Quaternion.AngleAxis(10f, Vector3.forward) * originVector;
-		rays[20f] = Quaternion.AngleAxis(20f, Vector3.forward) * originVector;
-	}
 	private void drawFunc()
 	{
 		for(float i = -20f; i < 30f; i += 10f)
@@ -259,7 +251,7 @@ public class EnemyInstructions: MonoBehaviour
 		hitPlayer = null;
 		playerSpotted = false;
 		instructionIndex = -1;
-		initializeRays();
+		updateRays();
 		nextInstruction();
 		if(waiting)
 		{
