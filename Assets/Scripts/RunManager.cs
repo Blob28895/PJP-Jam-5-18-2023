@@ -13,6 +13,7 @@ public class RunManager : MonoBehaviour
     private bool isPlaybackRunning = false;
     private int remainingRuns;
     private Vector3 startingPosition;
+    private float elapsedTime = 0f;
 
     private Recorder recorder;
     private PlayerController player;
@@ -26,6 +27,11 @@ public class RunManager : MonoBehaviour
 
         startingPosition = transform.position;
         remainingRuns = availableRuns;
+    }
+
+    void Update()
+    {
+        elapsedTime += Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -128,4 +134,15 @@ public class RunManager : MonoBehaviour
             enemy.GetComponent<EnemyInstructions>().resetEnemy();
 		}
 	}
+
+    public (string, string) getRunStats()
+    {
+        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
+        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
+        
+        string formattedElapsedTime = string.Format("{0:00}:{1:00}", minutes, seconds);
+        string usedEchoes = availableRuns - remainingRuns + "/" + availableRuns;
+        
+        return (formattedElapsedTime, usedEchoes);
+    }
 }
