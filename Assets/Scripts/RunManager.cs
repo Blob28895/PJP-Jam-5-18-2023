@@ -44,6 +44,7 @@ public class RunManager : MonoBehaviour
                 ResetRun(); 
                 audioManager.PlaySound("OutOfTime"); 
             }
+            Debug.Log("Recording position");
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 
@@ -58,6 +59,11 @@ public class RunManager : MonoBehaviour
     {
         runStarted = true;
         countdownTimer.StartTimer();
+    }
+
+    public void ResetSingleRun()
+    {
+        recorder.ClearRecording(remainingRuns);
     }
 
     public void ResetRun(bool allRuns = false)
