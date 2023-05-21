@@ -10,6 +10,7 @@ public class MoneyBag : MonoBehaviour
 		{
 			PlayerController player = collision.GetComponent<PlayerController>();
 			player.displayVictory();
+			GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>().PlaySound("Coins");
 		}
 	}
 }

@@ -12,3 +12,4 @@ URL:
 SFX:
 "Ding 2", andersmmg, https://freesound.org/people/andersmmg/sounds/523425/
 "Hit_02", LittleRobotSoundFactory, https://freesound.org/people/LittleRobotSoundFactory/sounds/270325/
+"Coin Splash", KaysonArgyle, https://freesound.org/people/KaysonArgyle/sounds/547603/
