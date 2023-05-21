@@ -47,3 +47,5 @@ MonoBehaviour:
   clipList:
   - clipName: OutOfTime
     audioClip: {fileID: 8300000, guid: 6a6b552f6b3260248a2a5f703b756df8, type: 3}
+  - clipName: Coins
+    audioClip: {fileID: 8300000, guid: 9cb3dfe9357206c4ab5563fbf6d9efff, type: 3}
