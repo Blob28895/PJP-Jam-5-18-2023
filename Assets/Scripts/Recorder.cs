@@ -20,6 +20,11 @@ public class Recorder : MonoBehaviour
         }
     }
 
+    public void ClearRecording(int run)
+    {
+        positions[run].Clear();
+    }   
+
     public void ClearAllRecordings()
     {
         positions.Clear();
