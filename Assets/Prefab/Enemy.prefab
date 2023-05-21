@@ -171,7 +171,7 @@ MonoBehaviour:
   - {x: -0.3, y: -0.25, z: 0}
   m_ShapePathHash: 1786684502
   m_Mesh: {fileID: 0}
-  m_InstanceId: -132258
+  m_InstanceId: 44640
 --- !u!114 &7653030803672973093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
     m_Bits: 320
   detectionBubble: {fileID: 959019579464688947, guid: 68b20502edc2d3e46b1f65469d60f785, type: 3}
   detectionTime: 0.5
-  light: {fileID: 7653030803035476351}
+  enemyLight: {fileID: 7653030803035476351}
   walkingSpeed: 2
   lightDetectionRange: 4.5
   instructions:

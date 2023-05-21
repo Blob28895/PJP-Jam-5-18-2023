@@ -7,13 +7,13 @@ public class EnemyInstructions: MonoBehaviour
 	public LayerMask includedLayers;
 	public GameObject detectionBubble;
 	public float detectionTime = 0.5f;
-	public GameObject light;
+	public GameObject enemyLight;
 	public float walkingSpeed = 1f;
 	public float lightDetectionRange = 4.5f;
 	[SerializeField]
 	public Instruction[] instructions;
 	
-	private Transform transform;
+	private Transform enemyTransform;
 	private IEnumerator wait;
 	private bool waiting = false;
 	private int instructionIndex = 0;
@@ -60,7 +60,7 @@ public class EnemyInstructions: MonoBehaviour
 	};
 	private void Awake()
 	{
-		transform = GetComponent<Transform>();
+		enemyTransform = GetComponent<Transform>();
 		
 		updateRays();
 		//drawFunc();
@@ -71,8 +71,8 @@ public class EnemyInstructions: MonoBehaviour
 		}
 		
 		
-		initialOrientation = transform.rotation;
-		initialPosition = transform.position;
+		initialOrientation = enemyTransform.rotation;
+		initialPosition = enemyTransform.position;
 		
 	}
 
@@ -80,7 +80,7 @@ public class EnemyInstructions: MonoBehaviour
 	{
 		for(float i = -20f; i < 30f; i += 10f)
 		{
-			Debug.DrawLine(transform.position, transform.position + rays[i], Color.red, 2.5f);
+			Debug.DrawLine(enemyTransform.position, enemyTransform.position + rays[i], Color.red, 2.5f);
 		}
 	}
 	
@@ -95,10 +95,10 @@ public class EnemyInstructions: MonoBehaviour
 			{
 				return;
 			}
-			if (transform.position != instructionEndPosition)
+			if (enemyTransform.position != instructionEndPosition)
 			{
 				//Debug.Log("Moving towards instruction");
-				transform.position = Vector3.MoveTowards(transform.position, instructionEndPosition, walkingSpeed * Time.deltaTime);
+				enemyTransform.position = Vector3.MoveTowards(enemyTransform.position, instructionEndPosition, walkingSpeed * Time.deltaTime);
 			}
 			else if (currInstruction.action == Action.walk && !waiting)
 			{
@@ -124,13 +124,13 @@ public class EnemyInstructions: MonoBehaviour
 		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
 			//Debug.Log("Moving Towards Player");
-			if(transform.position != hitPlayer.transform.position)
+			if(enemyTransform.position != hitPlayer.transform.position)
 			{
 				walk(hitPlayer.transform.position);
 			}
 			else
 			{
-				light.SetActive(false);
+				enemyLight.SetActive(false);
 			}
 		}
 
@@ -141,7 +141,7 @@ public class EnemyInstructions: MonoBehaviour
 			GetComponent<AudioSource>().Play();
 			playerSpotted = true;
 			GameObject bubble = Instantiate(detectionBubble);
-			bubble.transform.position = transform.position + new Vector3(0, GetComponent<SpriteRenderer>().bounds.size.x / 2, 0);
+			bubble.transform.position = enemyTransform.position + new Vector3(0, GetComponent<SpriteRenderer>().bounds.size.x / 2, 0);
 			Destroy(bubble, detectionTime);
 			finishDetectTime = Time.time + detectionTime;
 			hitPlayer.GetComponent<Collider2D>().isTrigger = true;
@@ -159,10 +159,10 @@ public class EnemyInstructions: MonoBehaviour
 		RaycastHit2D hit;
 		for(float i = -20f; i < 30; i +=10)
 		{
-			hit = Physics2D.Raycast(transform.position, transform.position + rays[i], lightDetectionRange, includedLayers);
+			hit = Physics2D.Raycast(enemyTransform.position, enemyTransform.position + rays[i], lightDetectionRange, includedLayers);
 			if(hit.collider != null && (hit.collider.gameObject.CompareTag("Player") || hit.collider.gameObject.CompareTag("Clone")))
 			{
-				transform.Rotate(0, 0, i);
+				enemyTransform.Rotate(0, 0, i);
 				return hit.collider.gameObject;
 			}
 		}
@@ -174,17 +174,17 @@ public class EnemyInstructions: MonoBehaviour
 		if(currInstruction.action == Action.walk)
 		{
 			setEndPosition(currInstruction.amount);
-			instructionEndOrientation = transform.rotation.z;
+			instructionEndOrientation = enemyTransform.rotation.z;
 		}
 		else
 		{
 			setEndOrientation(currInstruction.action, currInstruction.amount);
-			instructionEndPosition = transform.position;
+			instructionEndPosition = enemyTransform.position;
 		}
 	}
 	private void setEndPosition(float distance)
 	{
-		instructionEndPosition = transform.position + (rays[0] / lightDetectionRange) * distance;
+		instructionEndPosition = enemyTransform.position + (rays[0] / lightDetectionRange) * distance;
 	}
 	private void setEndOrientation(Action action, float degrees)
 	{
@@ -192,8 +192,8 @@ public class EnemyInstructions: MonoBehaviour
 		{
 			degrees *= -1;
 		}
-		instructionEndOrientation = transform.rotation.z + degrees;
-		rotations = (int)(Mathf.Abs(instructionEndOrientation - transform.rotation.z) / degreesPerTick);
+		instructionEndOrientation = enemyTransform.rotation.z + degrees;
+		rotations = (int)(Mathf.Abs(instructionEndOrientation - enemyTransform.rotation.z) / degreesPerTick);
 		//Debug.Log(instructionEndOrientation);
 	}
 
@@ -221,33 +221,33 @@ public class EnemyInstructions: MonoBehaviour
 	}
 	private void walk(Vector3 pos)
 	{
-		transform.position = Vector3.MoveTowards(transform.position, pos, walkingSpeed * Time.deltaTime);
+		enemyTransform.position = Vector3.MoveTowards(enemyTransform.position, pos, walkingSpeed * Time.deltaTime);
 		
 	}
 
 	private void turn()
 	{
-		transform.Rotate(0, 0, degreesPerTick);
+		enemyTransform.Rotate(0, 0, degreesPerTick);
 	}
 
 	private void updateRays()
 	{
 		//Debug.Log(transform.rotation.z);
-		rays[0] = Quaternion.AngleAxis(transform.eulerAngles.z, Vector3.forward) * originVector;
-		rays[-20f] = Quaternion.AngleAxis(-20f + transform.eulerAngles.z, Vector3.forward) * originVector;
-		rays[-10f] = Quaternion.AngleAxis(-10f + transform.eulerAngles.z, Vector3.forward) * originVector;
-		rays[10f] = Quaternion.AngleAxis(10f + transform.eulerAngles.z, Vector3.forward) * originVector;
-		rays[20f] = Quaternion.AngleAxis(20f + transform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[0] = Quaternion.AngleAxis(enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[-20f] = Quaternion.AngleAxis(-20f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[-10f] = Quaternion.AngleAxis(-10f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[10f] = Quaternion.AngleAxis(10f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
+		rays[20f] = Quaternion.AngleAxis(20f + enemyTransform.eulerAngles.z, Vector3.forward) * originVector;
 		
 	}
 
 	public void resetEnemy()
 	{
-		transform.position = initialPosition;
-		transform.rotation = initialOrientation;
+		enemyTransform.position = initialPosition;
+		enemyTransform.rotation = initialOrientation;
 		rotations = 0;
-		instructionEndOrientation = transform.rotation.z;
-		instructionEndPosition = transform.position;
+		instructionEndOrientation = enemyTransform.rotation.z;
+		instructionEndPosition = enemyTransform.position;
 		hitPlayer = null;
 		playerSpotted = false;
 		instructionIndex = -1;
@@ -261,7 +261,7 @@ public class EnemyInstructions: MonoBehaviour
 		}
 		
 		rotating = false;
-		light.SetActive(true);
+		enemyLight.SetActive(true);
 		
 	}
 
