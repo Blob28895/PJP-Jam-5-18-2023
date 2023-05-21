@@ -72,15 +72,6 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontalInput, verticalInput).normalized;
         if(movement != Vector2.zero) { runManager.StartRun(); }
 
-        // Check for potential collisions
-		int count = rb.Cast (
-			movement, // X and Y values between -1 and 1 that represent the direction from the body to look for collisions
-			movementFilter, // The settings that determine where a collision can occur on such as layers to collide with
-			castCollisions, // List of collisions to store the found collisions into after the Cast is finished
-			speed * Time.fixedDeltaTime); // The amount to cast equal to the movement
-
-        
-
         bool success = movePlayer(movement);
         if(!success)
 		{
