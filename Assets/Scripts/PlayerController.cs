@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         levelComplete = GameObject.FindGameObjectWithTag("Level Complete");
 		levelComplete.SetActive(false);
 
-        nextLevelName = getNextLevel(SceneManager.GetActiveScene().name);
+        //nextLevelName = getNextLevel(SceneManager.GetActiveScene().name);
     }
 
     private void Update()
@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
         }
 
         // handle going to next scene
-        if(Input.GetButtonDown("Lock In Run") && isLevelComplete) { 
-            SceneManager.LoadScene(nextLevelName);
+        if(Input.GetButtonDown("Lock In Run") && isLevelComplete) {
+            getNextLevel();
         }
     }
 
@@ -132,9 +132,9 @@ public class PlayerController : MonoBehaviour
         levelComplete.transform.Find("Image").Find("Echoes Used").GetComponent<TMPro.TMP_Text>().text = usedEchoes;
     }
 
-    private string getNextLevel(string level)
+    private void getNextLevel()
     {
-        string pattern = @"Level\s+(\d+)";
+        /*string pattern = @"Level\s+(\d+)";
         Match match = Regex.Match(level, pattern);
 
         if(!match.Success) { throw new ArgumentException("Level name does not match pattern"); }
@@ -144,6 +144,14 @@ public class PlayerController : MonoBehaviour
             int nextLevelNumber = levelNumber + 1;
             return "Level " + nextLevelNumber.ToString();
         }
-        throw new ArgumentException("Unable to parse level number");
+        throw new ArgumentException("Unable to parse level number");*/
+        if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+        {
+            SceneManager.LoadScene("Menu");
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }
