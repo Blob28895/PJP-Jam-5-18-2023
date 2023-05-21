@@ -62,7 +62,7 @@ public class EnemyInstructions: MonoBehaviour
 	{
 		transform = GetComponent<Transform>();
 		
-		initializeRays();
+		updateRays();
 		//drawFunc();
 		if (instructions.Length > 0)
 		{
@@ -96,6 +96,9 @@ public class EnemyInstructions: MonoBehaviour
 	{
 		if (!playerSpotted)
 		{
+			updateRays();
+			drawFunc();
+			hitPlayer = fireRaycasts();
 			if (instructions.Length == 0)
 			{
 				return;
@@ -124,9 +127,7 @@ public class EnemyInstructions: MonoBehaviour
 				wait = waiter(currInstruction.waitAfterCompletion);
 				StartCoroutine(wait);
 			}
-			updateRays();
-			drawFunc();
-			hitPlayer = fireRaycasts();
+			
 		}
 		else if(Time.time >= finishDetectTime)
 		{ // if the player is already spotted
