@@ -8,4 +8,9 @@ public class levelSelector : MonoBehaviour
 	{
 		SceneManager.LoadScene(sceneName);
 	}
+
+	public void closeGame()
+	{
+		Application.Quit();
+	}
 }
