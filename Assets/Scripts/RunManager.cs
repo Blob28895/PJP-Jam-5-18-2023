@@ -30,8 +30,14 @@ public class RunManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(runStarted) {
-            if(countdownTimer.timerEnded) { ResetRun(); audioManager.PlaySound("OutOfTime"); }
+        if(runStarted) 
+        {
+            if(countdownTimer.timerEnded) 
+            {
+                recorder.ClearRecording(remainingRuns);
+                ResetRun(); 
+                audioManager.PlaySound("OutOfTime"); 
+            }
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 
