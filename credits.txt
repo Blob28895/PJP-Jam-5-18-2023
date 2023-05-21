@@ -8,3 +8,7 @@ URL:
    https://fontlibrary.org/en/font/dogica
 
 ----------------
+
+SFX:
+"Ding 2", andersmmg, https://freesound.org/people/andersmmg/sounds/523425/
+"Hit_02", LittleRobotSoundFactory, https://freesound.org/people/LittleRobotSoundFactory/sounds/270325/
