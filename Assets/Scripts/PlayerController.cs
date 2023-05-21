@@ -38,7 +38,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         bool resetRun = Input.GetButtonDown("Reset Run"), resetAllRuns = Input.GetButtonDown("Reset All Runs");
-        if(resetRun || resetAllRuns) { 
+        if(resetRun || resetAllRuns) {
+
+            if(resetRun) { runManager.ResetSingleRun(); }
             runManager.ResetRun(resetAllRuns);
             canMove = true;
         }
