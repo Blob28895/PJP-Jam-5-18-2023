@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
         // make player face the last direction they were facing
         if (movement == Vector2.zero) { movement = lastDirectionFacing; }
         else { lastDirectionFacing = movement; }
-        
+
         // rotate player to direction facing
         float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
         transform.eulerAngles = new Vector3(0f, 0f, angle + 180f);
@@ -113,10 +113,7 @@ public class PlayerController : MonoBehaviour
             rb.MovePosition(rb.position + vec * speed * Time.fixedDeltaTime);
             return true;
         }
-        else
-		{
-            return false;
-        }        
+        return false;
 	}
 
     public void setCanMove(bool b)
