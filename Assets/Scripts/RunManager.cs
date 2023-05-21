@@ -47,7 +47,7 @@ public class RunManager : MonoBehaviour
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 
-        if(runStarted && !isPlaybackRunning && remainingRuns != availableRuns) { 
+        if(runStarted && !isPlaybackRunning) { 
             Debug.Log("Starting multiple playbacks");
             StartMultiplePlaybacks(remainingRuns + 1, availableRuns, player.speed); 
         }
@@ -88,11 +88,6 @@ public class RunManager : MonoBehaviour
         remainingRuns--;
 
         isPlaybackRunning = false;
-        
-        if(remainingRuns == 0) 
-        {
-            StartMultiplePlaybacks(1, availableRuns, player.speed);
-        }
     }
 
     private void StartMultiplePlaybacks(int beginAtRun, int endAtRun, int speed)
