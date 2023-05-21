@@ -13,3 +13,7 @@ SFX:
 "Ding 2", andersmmg, https://freesound.org/people/andersmmg/sounds/523425/
 "Hit_02", LittleRobotSoundFactory, https://freesound.org/people/LittleRobotSoundFactory/sounds/270325/
 "Coin Splash", KaysonArgyle, https://freesound.org/people/KaysonArgyle/sounds/547603/
+
+----------------
+Music:
+"Ludum Dare 38 - Track Two", Abstraction, https://soundcloud.com/abstraction/ludum-dare-38-track-two-game-loop-free-download?in=abstraction/sets/ludum-dare-challenge&si=94a0e2fb93224f4f8c97ba6bff0739cc&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
