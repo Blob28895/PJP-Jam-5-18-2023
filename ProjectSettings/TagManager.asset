@@ -55,3 +55,6 @@ TagManager:
   - name: enemy
     uniqueID: 3710835681
     locked: 0
+  - name: New Test Layer
+    uniqueID: 112999143
+    locked: 0
