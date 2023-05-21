@@ -197,6 +197,7 @@ public class EnemyInstructions: MonoBehaviour
 	{
 		if (action == Action.rightTurn)
 		{
+			//Debug.Log("right turn");
 			degrees *= -1;
 		}
 		instructionEndOrientation = enemyTransform.rotation.z + degrees;
@@ -234,7 +235,14 @@ public class EnemyInstructions: MonoBehaviour
 
 	private void turn()
 	{
-		enemyTransform.Rotate(0, 0, degreesPerTick);
+		if(currInstruction.action == Action.leftTurn)
+		{
+			enemyTransform.Rotate(0, 0, degreesPerTick);
+		}
+		else
+		{
+			enemyTransform.Rotate(0, 0, -degreesPerTick);
+		}
 	}
 
 	private void updateRays()
