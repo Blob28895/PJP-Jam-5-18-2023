@@ -16,11 +16,13 @@ public class RunManager : MonoBehaviour
 
     private Recorder recorder;
     private PlayerController player;
-    
+    private AudioManager audioManager;
+
     void Start()
     {
         recorder = GetComponent<Recorder>();
         player = GetComponent<PlayerController>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
 
         startingPosition = transform.position;
         remainingRuns = availableRuns;
@@ -29,7 +31,7 @@ public class RunManager : MonoBehaviour
     void FixedUpdate()
     {
         if(runStarted) {
-            if(countdownTimer.timerEnded) { ResetRun(); }
+            if(countdownTimer.timerEnded) { ResetRun(); audioManager.PlaySound("OutOfTime"); }
             recorder.RecordPosition(transform.position, remainingRuns); 
         }
 

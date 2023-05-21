@@ -11,11 +11,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private ContactFilter2D movementFilter;
     private List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
-
+    private AudioManager audioManager;
     void Start()
     {  
         runManager = GetComponent<RunManager>();
         rb = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     void Update()

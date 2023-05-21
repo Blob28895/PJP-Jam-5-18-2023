@@ -144,7 +144,8 @@ public class EnemyInstructions: MonoBehaviour
 		
 		if(hitPlayer != null && !playerSpotted)
 		{ // will only be entered when first seeing a player
-			//Debug.Log("Found him!");
+		  //Debug.Log("Found him!");
+			GetComponent<AudioSource>().Play();
 			playerSpotted = true;
 			GameObject bubble = Instantiate(detectionBubble);
 			bubble.transform.position = transform.position + new Vector3(0, GetComponent<SpriteRenderer>().bounds.size.x / 2, 0);
